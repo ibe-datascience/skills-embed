@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="favicon.png" type="image/png">
+<meta charset="utf-8">
+<title>ESCO Taxonomy Entity Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Atkinson Hyperlegible',sans-serif;background:#0d1117;color:#c9d1d9;
+  height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+.header{background:#0d1117;border-bottom:1px solid #21262d;
+  display:flex;align-items:center;padding:0 28px;height:46px;flex-shrink:0;gap:24px}
+
+.back{font-size:12px;color:#484f58;text-decoration:none;transition:color .15s;flex-shrink:0}
+.back:hover{color:#58a6ff}
+
+.header h1{font-size:15px;font-weight:700;color:#f0f6fc;white-space:nowrap}
+
+.sep{width:1px;height:20px;background:#21262d;flex-shrink:0}
+
+.tabs{display:flex;gap:0;margin-left:-4px}
+.tab{font-family:'Atkinson Hyperlegible',sans-serif;font-size:13px;
+  padding:13px 16px;border:none;background:transparent;color:#6e7681;cursor:pointer;
+  border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .12s}
+.tab:hover{color:#c9d1d9}
+.tab.active{color:#f0f6fc;border-bottom-color:#58a6ff;font-weight:700}
+
+.frame-wrap{flex:1;position:relative;overflow:hidden}
+.frame-wrap iframe{width:100%;height:100%;border:none;position:absolute;top:0;left:0}
+
+/* ── color legend ── */
+.legend-toggle{
+  font-family:'Atkinson Hyperlegible',sans-serif;font-size:11px;
+  padding:6px 12px;border:1px solid #30363d;border-radius:6px;
+  background:#21262d;color:#8b949e;cursor:pointer;margin-left:auto;flex-shrink:0;
+  transition:color .15s,border-color .15s}
+.legend-toggle:hover{color:#c9d1d9;border-color:#484f58}
+.legend-toggle.open{color:#58a6ff;border-color:#58a6ff}
+
+.legend-panel{
+  position:absolute;top:47px;right:16px;z-index:100;
+  background:rgba(22,27,34,.96);border:1px solid #30363d;border-radius:10px;
+  padding:14px 18px;min-width:220px;max-width:320px;max-height:calc(100vh - 70px);overflow-y:auto;
+  box-shadow:0 8px 32px rgba(0,0,0,.45);
+  opacity:0;transform:translateY(-6px);pointer-events:none;
+  transition:opacity .2s,transform .2s}
+.legend-panel.visible{opacity:1;transform:translateY(0);pointer-events:all}
+.legend-title{font-size:11px;color:#484f58;text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px}
+.legend-item{display:flex;align-items:center;gap:10px;padding:4px 0}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.legend-label{font-size:12px;color:#c9d1d9;line-height:1.3}
+.legend-code{color:#484f58;font-size:10px;font-family:monospace;margin-right:4px}
+</style>
+</head>
+<body>
+
+<style>
+body{opacity:0;animation:page-in .5s .1s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes page-in{to{opacity:1}}
+</style>
+<div class="header">
+  <a class="back" href="index.html">← Back</a>
+  <h1>Taxonomy Entity Explorer</h1>
+  <div class="sep"></div>
+  <div class="tabs">
+    <button class="tab active" data-src="explorer_voyage-4-large_occ_1024.html">Occupations</button>
+    <button class="tab" data-src="explorer_voyage-4-large_skills_1024.html">Skills</button>
+    <button class="tab" data-src="explorer_voyage-4-large_knowledge_1024.html">Knowledge</button>
+  </div>
+  <button class="legend-toggle" id="legendToggle">Legend</button>
+</div>
+
+<div class="legend-panel" id="legendPanel">
+  <div class="legend-title">Color groups</div>
+  <div id="legendItems"></div>
+</div>
+
+<script>
+const LEGENDS = {
+  "explorer_voyage-4-large_occ_1024.html": [
+    ["#e6194b","0","Armed forces occupations"],
+    ["#3cb44b","1","Managers"],
+    ["#4363d8","2","Professionals"],
+    ["#f58231","3","Technicians and associate professionals"],
+    ["#911eb4","4","Clerical support workers"],
+    ["#42d4f4","5","Service and sales workers"],
+    ["#f032e6","6","Skilled agricultural, forestry and fishery workers"],
+    ["#bfef45","7","Craft and related trades workers"],
+    ["#fabed4","8","Plant and machine operators and assemblers"],
+    ["#469990","9","Elementary occupations"]
+  ],
+  "explorer_voyage-4-large_skills_1024.html": [
+    ["#4cc9f0","L2","Classical languages"],
+    ["#7209b7","S1","Communication, collaboration and creativity"],
+    ["#f72585","S2","Information skills"],
+    ["#4361ee","S3","Assisting and caring"],
+    ["#3a0ca3","S4","Management skills"],
+    ["#480ca8","S5","Working with computers"],
+    ["#b5179e","S6","Handling and moving"],
+    ["#06d6a0","S7","Constructing"],
+    ["#ffd166","S8","Working with machinery and specialised equipment"],
+    ["#ef476f","T1","Core skills and competences"],
+    ["#118ab2","T2","Thinking skills and competences"],
+    ["#073b4c","T3","Self-management skills and competences"],
+    ["#2dc653","T4","Social and communication skills and competences"],
+    ["#ff6b35","T5","Physical and manual skills and competences"],
+    ["#8338ec","T6","Life skills and competences"]
+  ],
+  "explorer_voyage-4-large_knowledge_1024.html": [
+    ["#4cc9f0","00","Generic programmes and qualifications"],
+    ["#7209b7","01","Education"],
+    ["#f72585","02","Arts and humanities"],
+    ["#4361ee","03","Social sciences, journalism and information"],
+    ["#3a0ca3","04","Business, administration and law"],
+    ["#480ca8","05","Natural sciences, mathematics and statistics"],
+    ["#b5179e","06","Information and communication technologies"],
+    ["#06d6a0","07","Engineering, manufacturing and construction"],
+    ["#ffd166","08","Agriculture, forestry, fisheries and veterinary"],
+    ["#ef476f","09","Health and welfare"],
+    ["#118ab2","10","Services"],
+    ["#073b4c","L2","Classical languages"],
+    ["#2dc653","S1","Communication, collaboration and creativity"],
+    ["#ff6b35","S4","Management skills"],
+    ["#8338ec","S5","Working with computers"],
+    ["#fb5607","S7","Constructing"],
+    ["#ffbe0b","T1","Core skills and competences"],
+    ["#3d405b","T2","Thinking skills and competences"],
+    ["#4cc9f0","T3","Self-management skills and competences"],
+    ["#7209b7","T4","Social and communication skills and competences"],
+    ["#f72585","T5","Physical and manual skills and competences"],
+    ["#4361ee","T6","Life skills and competences"]
+  ]
+};
+</script>
+
+<div class="frame-wrap">
+  <iframe id="explorer-frame" src="explorer_voyage-4-large_occ_1024.html"></iframe>
+</div>
+
+<script>
+const tabs = document.querySelectorAll('.tab');
+const frame = document.getElementById('explorer-frame');
+const legendToggle = document.getElementById('legendToggle');
+const legendPanel = document.getElementById('legendPanel');
+const legendItems = document.getElementById('legendItems');
+let currentSrc = 'explorer_voyage-4-large_occ_1024.html';
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentSrc = tab.dataset.src;
+    frame.src = currentSrc;
+    if (legendPanel.classList.contains('visible')) buildLegend();
+  });
+});
+
+legendToggle.addEventListener('click', () => {
+  legendToggle.classList.toggle('open');
+  legendPanel.classList.toggle('visible');
+  if (legendPanel.classList.contains('visible')) buildLegend();
+});
+
+function buildLegend() {
+  legendItems.innerHTML = '';
+  const items = LEGENDS[currentSrc] || [];
+  items.forEach(([color, code, name]) => {
+    const el = document.createElement('div');
+    el.className = 'legend-item';
+    el.innerHTML =
+      `<span class="legend-dot" style="background:${color}"></span>` +
+      `<span class="legend-label"><span class="legend-code">${code}.</span> ${name}</span>`;
+    legendItems.appendChild(el);
+  });
+}
+</script>
+</body>
+</html>

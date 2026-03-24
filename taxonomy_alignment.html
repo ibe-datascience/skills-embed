@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="favicon.png" type="image/png">
+<meta charset="utf-8">
+<title>Semantic Taxonomy Alignment — Benchmark</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+<style>
+:root{--r-background-color:#0d1117;--r-main-font:'Atkinson Hyperlegible',sans-serif;
+  --r-heading-font:'Atkinson Hyperlegible',sans-serif;--r-main-color:#c9d1d9;
+  --r-heading-color:#f0f6fc;--r-link-color:#58a6ff;--r-link-color-hover:#79c0ff;
+  --r-selection-background-color:#264f78;--r-main-font-size:28px;
+  --r-heading1-size:1.8em;--r-heading2-size:1.3em;--r-heading3-size:1.1em}
+.reveal{font-family:var(--r-main-font)}
+.reveal h1,.reveal h2,.reveal h3{font-family:var(--r-heading-font);text-transform:none;letter-spacing:-.02em}
+.reveal h1{border-bottom:2px solid #30363d;padding-bottom:16px}
+.reveal .subtitle{font-size:.45em;color:#8b949e;display:block;margin-top:12px;font-weight:400}
+.reveal .pill{display:inline-block;font-size:.5em;background:#161b22;border:1px solid #30363d;
+  border-radius:20px;padding:4px 14px;color:#8b949e;margin-top:16px;text-transform:uppercase;letter-spacing:.5px}
+.reveal ul{text-align:left;font-size:.85em;line-height:1.7}
+.reveal li{margin-bottom:.3em}
+.reveal code{font-family:'SF Mono','Fira Code',monospace;background:#161b22;border:1px solid #30363d;
+  border-radius:4px;padding:1px 6px;font-size:.82em;color:#79c0ff}
+.reveal .highlight{color:#58a6ff}
+.reveal .best{color:#3fb950;font-weight:700}
+.reveal .dim{color:#6e7681}
+.reveal blockquote{background:#161b22;border-left:4px solid #58a6ff;padding:16px 24px;
+  font-style:normal;font-size:.8em;color:#8b949e;border-radius:0 8px 8px 0;text-align:left}
+.reveal table{margin:0 auto;font-size:.6em;border-collapse:collapse}
+.reveal table th{background:#161b22;color:#58a6ff;padding:6px 12px;border-bottom:2px solid #30363d}
+.reveal table td{padding:5px 12px;border-bottom:1px solid #21262d;color:#c9d1d9}
+.reveal table.res{font-size:.5em}
+.reveal table.res td,.reveal table.res th{padding:4px 7px}
+.reveal table.res td.pub{color:#8b949e;font-size:.9em}
+.reveal table tr:last-child td{border-bottom:none}
+.reveal .small{font-size:.65em;color:#6e7681;margin-top:20px}
+.reveal .cols{display:flex;gap:32px;align-items:flex-start;text-align:left}
+.reveal .cols>div{flex:1}
+.reveal .card-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;text-align:left;font-size:.75em}
+.reveal .card-grid .cg{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 18px}
+.reveal .card-grid .cg h4{color:#58a6ff;font-size:1em;margin:0 0 6px}
+.reveal .card-grid .cg p{margin:0;color:#8b949e;font-size:.9em;line-height:1.5}
+.home-link{position:fixed;top:18px;left:24px;z-index:100;font-size:13px;
+  font-family:'Atkinson Hyperlegible',sans-serif;color:#8b949e;
+  text-decoration:none;padding:5px 12px;border:1px solid #30363d;border-radius:6px;
+  background:#0d1117;transition:color .15s,border-color .15s}
+.home-link:hover{color:#58a6ff;border-color:#58a6ff}
+/* slide number — move left of the nav controls */
+.reveal .slide-number{right:56px;bottom:14px;font-family:'Atkinson Hyperlegible',sans-serif}
+
+/* ── Citations ── */
+cite.ref-cite{font-style:normal;color:#79c0ff;cursor:default;position:relative;
+  display:inline-block;border-bottom:1px dashed #444c56;white-space:nowrap;line-height:1.2}
+cite.ref-cite:hover,cite.ref-cite:focus-within{color:#58a6ff}
+.ref-tooltip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;
+  transform:translateX(-50%);min-width:300px;max-width:420px;background:#161b22;
+  border:1px solid #58a6ff44;border-radius:8px;padding:12px 16px;font-size:.55em;
+  color:#c9d1d9;text-align:left;white-space:normal;line-height:1.5;z-index:9999;
+  pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.6)}
+cite.ref-cite:hover .ref-tooltip{display:block}
+a.ref-cite-link{color:inherit;text-decoration:none;border-bottom:1px dashed #444c56}
+a.ref-cite-link:hover{color:#58a6ff;border-bottom-color:#58a6ff}
+.ref-list{text-align:left;font-size:.6em;line-height:1.7;list-style:none;padding:0;margin:0}
+.ref-list li{margin-bottom:14px;padding-left:1.6em;text-indent:-1.6em;color:#c9d1d9}
+.ref-list li a{color:#58a6ff}
+</style>
+</head>
+<body>
+<a class="home-link" href="index.html">← Main page</a>
+
+<style>
+body{opacity:0;animation:page-in .5s .1s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes page-in{to{opacity:1}}
+</style>
+<div class="reveal">
+<div class="slides">
+
+<!-- TITLE -->
+<section>
+  <h1>Semantic Taxonomy<br>Alignment
+    <span class="subtitle">Benchmark Results — Mapping Skills to ESCO via Embedding Models</span>
+  </h1>
+  <span class="pill">IBE Data Science Team · 2026</span>
+</section>
+
+<!-- MAIN RESULTS: HOUSE -->
+<section>
+  <h2>Results — House Services Domain</h2>
+  <table class="res">
+    <tr><th>Model</th><th>Published</th><th>FT</th><th>Synth. data</th><th>RP@1</th><th>RP@5</th><th>RP@10</th><th>MRR</th></tr>
+    <tr><td class="best">NV-Embed-v2</td><td class="pub">—</td><td>✓</td><td>Synth-ESCO</td><td class="best">.495</td><td class="best">.822</td><td class="best">.900</td><td class="best">.632</td></tr>
+    <tr><td>OpenAI large</td><td class="pub">—</td><td>—</td><td>—</td><td>.463</td><td>.764</td><td>.849</td><td>.587</td></tr>
+    <tr><td>ConTeXT-ST</td><td class="pub"><cite data-ref="decorte2025"></cite></td><td>✓</td><td>Synth-ESCO</td><td>.468</td><td>.750</td><td>.838</td><td>.591</td></tr>
+    <tr><td>voyage-4-nano-ft</td><td class="pub">—</td><td>✓</td><td>Synth-ESCO</td><td>.438</td><td>.739</td><td>.819</td><td>.564</td></tr>
+    <tr><td>OpenAI small</td><td class="pub">—</td><td>—</td><td>—</td><td>.444</td><td>.736</td><td>.835</td><td>.570</td></tr>
+    <tr><td>MiniLM-L6-v2</td><td class="pub"><cite data-ref="morgan2025"></cite></td><td>—</td><td>—</td><td>.451</td><td>.694</td><td>.764</td><td>.552</td></tr>
+    <tr><td>voyage-context-3</td><td class="pub">—</td><td>—</td><td>—</td><td>.428</td><td>.692</td><td>.782</td><td>.542</td></tr>
+    <tr><td>voyage-4-nano</td><td class="pub">—</td><td>—</td><td>—</td><td>.407</td><td>.685</td><td>.769</td><td>.522</td></tr>
+    <tr><td>KaLM-Gemma3-12B</td><td class="pub">—</td><td>—</td><td>—</td><td>.335</td><td>.634</td><td>.720</td><td>.462</td></tr>
+    <tr><td>voyage-4-large</td><td class="pub">—</td><td>—</td><td>—</td><td>.375</td><td>.625</td><td>.727</td><td>.485</td></tr>
+    <tr><td>e5-embedding</td><td class="pub"><cite data-ref="clavie2023"></cite></td><td>✓</td><td>—</td><td>.407</td><td>.533</td><td>.610</td><td>.495</td></tr>
+    <tr><td>all-mpnet-base-v2</td><td class="pub"><cite data-ref="decorte2023"></cite></td><td>✓</td><td>Synth-ESCO</td><td>.271</td><td>.459</td><td>.539</td><td>.426</td></tr>
+    <tr><td class="dim">ESCO-XLM-R</td><td class="dim pub"><cite data-ref="zhang2023"></cite></td><td class="dim">✓</td><td class="dim">ESCO tax.</td><td class="dim">.194</td><td class="dim">.268</td><td class="dim">.301</td><td class="dim">.225</td></tr>
+  </table>
+  <p class="small">568 matchable spans · sorted by RP@5</p>
+</section>
+
+<!-- MAIN RESULTS: TECH -->
+<section>
+  <h2>Results — Tech Domain</h2>
+  <table class="res">
+    <tr><th>Model</th><th>Published</th><th>FT</th><th>Synth. data</th><th>RP@1</th><th>RP@5</th><th>RP@10</th><th>MRR</th></tr>
+    <tr><td>NV-Embed-v2</td><td class="pub">—</td><td>✓</td><td>Synth-ESCO</td><td>.577</td><td class="best">.838</td><td class="best">.917</td><td>.692</td></tr>
+    <tr><td class="best">ConTeXT-ST</td><td class="pub"><cite data-ref="decorte2025"></cite></td><td>✓</td><td>Synth-ESCO</td><td class="best">.602</td><td>.816</td><td>.878</td><td class="best">.699</td></tr>
+    <tr><td>OpenAI large</td><td class="pub">—</td><td>—</td><td>—</td><td>.562</td><td>.804</td><td>.881</td><td>.668</td></tr>
+    <tr><td>voyage-4-nano-ft</td><td class="pub">—</td><td>✓</td><td>Synth-ESCO</td><td>.570</td><td>.789</td><td>.832</td><td>.661</td></tr>
+    <tr><td>OpenAI small</td><td class="pub">—</td><td>—</td><td>—</td><td>.527</td><td>.782</td><td>.850</td><td>.640</td></tr>
+    <tr><td>MiniLM-L6-v2</td><td class="pub"><cite data-ref="morgan2025"></cite></td><td>—</td><td>—</td><td>.543</td><td>.779</td><td>.844</td><td>.646</td></tr>
+    <tr><td>voyage-context-3</td><td class="pub">—</td><td>—</td><td>—</td><td>.476</td><td>.761</td><td>.844</td><td>.594</td></tr>
+    <tr><td>voyage-4-nano</td><td class="pub">—</td><td>—</td><td>—</td><td>.561</td><td>.758</td><td>.823</td><td>.646</td></tr>
+    <tr><td>KaLM-Gemma3-12B</td><td class="pub">—</td><td>—</td><td>—</td><td>.433</td><td>.711</td><td>.786</td><td>.555</td></tr>
+    <tr><td>voyage-4-large</td><td class="pub">—</td><td>—</td><td>—</td><td>.453</td><td>.700</td><td>.792</td><td>.557</td></tr>
+    <tr><td>e5-embedding</td><td class="pub"><cite data-ref="clavie2023"></cite></td><td>✓</td><td>—</td><td>.465</td><td>.615</td><td>.689</td><td>.537</td></tr>
+    <tr><td>all-mpnet-base-v2</td><td class="pub"><cite data-ref="decorte2023"></cite></td><td>✓</td><td>Synth-ESCO</td><td>.385</td><td>.542</td><td>.615</td><td>.521</td></tr>
+    <tr><td class="dim">ESCO-XLM-R</td><td class="dim pub"><cite data-ref="zhang2023"></cite></td><td class="dim">✓</td><td class="dim">ESCO tax.</td><td class="dim">.254</td><td class="dim">.356</td><td class="dim">.409</td><td class="dim">.298</td></tr>
+  </table>
+  <p class="small">674 matchable spans · sorted by RP@5</p>
+</section>
+
+<!-- FINE-TUNING IMPACT -->
+<section>
+  <h2>Fine-Tuning Impact</h2>
+  <div class="cols">
+    <div>
+      <h3>voyage-4-nano</h3>
+      <table>
+        <tr><th></th><th>Base</th><th>Fine-tuned</th><th>Δ</th></tr>
+        <tr><td>house RP@1</td><td>0.407</td><td class="best">0.438</td><td class="best">+3.2pp</td></tr>
+        <tr><td>house RP@10</td><td>0.769</td><td class="best">0.819</td><td class="best">+4.9pp</td></tr>
+        <tr><td>tech RP@1</td><td>0.561</td><td class="best">0.570</td><td class="best">+0.9pp</td></tr>
+        <tr><td>tech RP@10</td><td>0.823</td><td class="best">0.832</td><td class="best">+0.9pp</td></tr>
+      </table>
+    </div>
+    <div>
+      <ul>
+        <li>Consistent improvement across both domains</li>
+        <li>Larger gains on house_test (out-of-domain for the model)</li>
+        <li>Fine-tuning on 138k synthetic pairs sufficient to boost an already strong base</li>
+        <li>Open-source model matches proprietary API performance</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CONTEXT STRATEGIES -->
+<section>
+  <h2>Context Strategies</h2>
+  <table>
+    <tr><th>Model</th><th>Strategy</th><th>house RP@1</th><th>tech RP@1</th></tr>
+    <tr><td>OpenAI large</td><td>label-only</td><td class="best">0.463</td><td class="best">0.562</td></tr>
+    <tr><td>OpenAI large</td><td>label + context</td><td>0.312</td><td>0.430</td></tr>
+    <tr><td>voyage-4-large</td><td>label-only</td><td>0.375</td><td>0.453</td></tr>
+    <tr><td>voyage-context-3</td><td>native context</td><td class="best">0.428</td><td class="best">0.476</td></tr>
+    <tr><td>ESCO-XLM-R</td><td>label-only</td><td>0.194</td><td>0.254</td></tr>
+    <tr><td>ESCO-XLM-R</td><td>label + context</td><td>0.048</td><td>0.071</td></tr>
+  </table>
+  <blockquote>
+    Naive <code>[SEP]</code> concatenation hurts performance. Context only helps with models designed for it (voyage-context-3).
+    Label-only embedding is the safest strategy for skill matching.
+  </blockquote>
+</section>
+
+<!-- RERANKING RESULTS -->
+<section>
+  <h2>Reranking Results</h2>
+  <table>
+    <tr><th>Retriever</th><th>Reranker</th><th>house RP@1</th><th>tech RP@1</th></tr>
+    <tr><td>ConTeXT-ST</td><td>—</td><td class="best">0.468</td><td class="best">0.602</td></tr>
+    <tr><td>ConTeXT-ST</td><td>rerank-2.5</td><td>0.389</td><td>0.487</td></tr>
+    <tr><td>voyage-context-3</td><td>—</td><td>0.428</td><td>0.476</td></tr>
+    <tr><td>voyage-context-3</td><td>rerank-2.5</td><td>0.394</td><td>0.500</td></tr>
+    <tr><td>voyage-4-large</td><td>—</td><td>0.375</td><td>0.453</td></tr>
+    <tr><td>voyage-4-large</td><td>rerank-2.5</td><td>0.377</td><td>0.488</td></tr>
+  </table>
+  <p class="small">General-purpose cross-encoders do not improve upon domain-aware bi-encoders for short-text skill matching.</p>
+</section>
+
+<!-- DIMENSIONALITY -->
+<section>
+  <h2>Embedding Dimensions</h2>
+  <table>
+    <tr><th>Model</th><th>Dims</th><th>house RP@1</th><th>tech RP@1</th><th>MRR (avg)</th></tr>
+    <tr><td>voyage-4-large</td><td>1024</td><td class="best">0.375</td><td class="best">0.453</td><td class="best">0.521</td></tr>
+    <tr><td>voyage-4-large</td><td>512</td><td>0.361</td><td>0.447</td><td>0.508</td></tr>
+    <tr><td>voyage-4-large</td><td>256</td><td>0.333</td><td>0.426</td><td>0.478</td></tr>
+    <tr><td>voyage-context-3</td><td>1024</td><td class="best">0.428</td><td>0.476</td><td class="best">0.568</td></tr>
+    <tr><td>voyage-context-3</td><td>512</td><td>0.428</td><td class="best">0.484</td><td>0.567</td></tr>
+    <tr><td>voyage-context-3</td><td>256</td><td>0.387</td><td>0.467</td><td>0.540</td></tr>
+  </table>
+  <p class="small">voyage-context-3 at 512d performs nearly identically to 1024d — offering a 2× storage/speed gain with minimal accuracy loss.</p>
+</section>
+
+<!-- KEY FINDINGS -->
+<section>
+  <h2>Key Findings</h2>
+  <ul>
+    <li><strong>NV-Embed-v2</strong> (8B, 4096-dim) <cite data-ref="lee2024"></cite> is the new <span class="highlight">top performer on house_test</span> (RP@1 = .495) and a close second on tech_test</li>
+    <li><strong>ConTeXT-ST</strong> (domain-specific, 768-dim, open-source) leads on tech_test (RP@1 = .602) — 40× smaller than NV-Embed-v2</li>
+    <li><strong>Instruction-tuned LLM embeddings</strong> (NV-Embed-v2) benefit from task-specific query prompts</li>
+    <li><strong>Fine-tuning voyage-4-nano</strong> on synthetic ESCO data narrows the gap to leading models</li>
+    <li><strong>Label-only</strong> embedding consistently beats label+context for non-native contextual models</li>
+    <li><strong>Model size ≠ accuracy</strong>: MiniLM (22M params) outperforms voyage-4-large (API, 1024d) and KaLM-Gemma3-12B (12B params, 3840-dim) <cite data-ref="clavie2023"></cite></li>
+  </ul>
+</section>
+
+<!-- CONCLUSIONS -->
+<section>
+  <h2>Recommendations</h2>
+  <div class="card-grid">
+    <div class="cg">
+      <h4>Best Raw Accuracy</h4>
+      <p><code>NV-Embed-v2</code> — 8B LLM embeddings, highest house RP@1 (.495) and RP@10 (.917 tech). Requires GPU.</p>
+    </div>
+    <div class="cg">
+      <h4>Best Efficiency Trade-off</h4>
+      <p><code>ConTeXT-ST</code> — 768-dim, open-source, 40× smaller, highest tech RP@1 (.602). Ideal for production.</p>
+    </div>
+    <div class="cg">
+      <h4>Best Fine-tuned Open-Source</h4>
+      <p><code>voyage-4-nano-ft</code> — fine-tuned on ESCO, local inference, competitive performance.</p>
+    </div>
+    <div class="cg">
+      <h4>Strategy</h4>
+      <p>Use <strong>label-only</strong> embedding. Reserve contextual strategies for native contextual models only.</p>
+    </div>
+  </div>
+  <span class="pill">Thank you</span>
+</section>
+
+<!-- REFERENCES -->
+<section>
+  <h2>References</h2>
+  <ul class="ref-list" id="ref-slide-list"></ul>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="refs.js"></script>
+<script>
+Reveal.initialize({
+  hash: true, center: true, transition: 'slide',
+  backgroundTransition: 'fade', width: 1100, height: 700,
+  margin: 0.08, controls: true, progress: true, slideNumber: 'c/t'
+});
+</script>
+</body>
+</html>
